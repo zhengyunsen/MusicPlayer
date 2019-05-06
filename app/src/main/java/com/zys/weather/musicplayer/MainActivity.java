@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             File file = new File(Environment.getExternalStorageDirectory() , "2");
             Log.d(TAG, file.getPath());
             mediaPlayer.setDataSource(file.getPath());
+//            mediaPlayer.setDataSource("/sdcard/Download/1");
 //            totalTime = mediaPlayer.getDuration();
             mediaPlayer.prepare();
         } catch (Exception e) {
@@ -160,18 +161,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                    mediaPlayer = MediaPlayer.create(this,uri);
 //                    mediaPlayer.prepare();
 //                    mediaPlayer.start();
+//                    mediaPlayer.setDataSource(MainActivity.this,uri);
+//                    mediaPlayer.prepare();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-//                Toast.makeText(this, "文件路径：" + uri.getPath().toString(), Toast.LENGTH_SHORT).show();
-//                Log.d(TAG, uri.getPath().toString());
-//                try {
-//                    mediaPlayer.setDataSource(uri.getPath().toString());
-//                    mediaPlayer.prepare();
-//                }catch (Exception e){
-//                    e.printStackTrace();
-//                }
+                Toast.makeText(this, "文件路径：" + uri.getPath().toString(), Toast.LENGTH_SHORT).show();
+                Log.d(TAG, uri.getPath().toString());
+                try {
+                    mediaPlayer.reset();
+                    mediaPlayer.setDataSource(MainActivity.this,uri);
+                    mediaPlayer.prepare();
+                    mediaPlayer.start();
+               }catch (Exception e){
+                    e.printStackTrace();
+               }
 
             }
         }
