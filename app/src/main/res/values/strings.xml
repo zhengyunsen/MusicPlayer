@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MusicPlayer</string>
+    <string name="app_btn_selectfile">文件</string>
+    <string name="app_btn_forward">前进</string>
+    <string name="app_btn_pause">暂停</string>
+    <string name="app_btn_backward">后退</string>
+    <string name="app_btn_start">播放</string>
+</resources>
