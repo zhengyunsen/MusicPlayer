@@ -5,4 +5,8 @@
     <string name="app_btn_pause">暂停</string>
     <string name="app_btn_backward">后退</string>
     <string name="app_btn_start">播放</string>
+    <string name="app_btn_connectnetwork">联网</string>
+    <string name="app_btn_nextmusic">下一首</string>
+    <string name="app_btn_forwardmusic">上一首</string>
+    <string name="app_et_musicurl">输入歌曲网址</string>
 </resources>

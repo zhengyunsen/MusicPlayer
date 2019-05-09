@@ -3,6 +3,7 @@
     package="com.zys.weather.musicplayer">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,6 +18,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".service.DownloadService"
+            android:enabled="true"
+            android:exported="true">
+
+        </service>
+        <!--<activity android:name=".FirstActivity">-->
+            <!---->
+        <!--</activity>-->
+        <receiver android:name=".MyAppWidgetProvider">
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/appwidget_provider_info">
+            </meta-data>
+
+            <intent-filter>
+                <action android:name="study.chenj.chapter5.CLICK"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

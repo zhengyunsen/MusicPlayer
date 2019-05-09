@@ -3,33 +3,80 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/select_file"
+    <LinearLayout
+        android:id="@+id/url_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/app_btn_selectfile" />
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/music_url"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/app_et_musicurl"/>
+        <Button
+            android:id="@+id/connect_network"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_btn_connectnetwork" />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/start"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/app_btn_start" />
+    <LinearLayout
+        android:id="@+id/menu_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/pause"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/app_btn_pause" />
 
-    <Button
-        android:id="@+id/forward"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/app_btn_forward" />
+        <Button
+            android:id="@+id/select_file"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_btn_selectfile" />
 
-    <Button
-        android:id="@+id/backward"
+        <Button
+            android:id="@+id/forward_music"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_btn_forwardmusic" />
+
+
+        <Button
+            android:id="@+id/next_music"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_btn_nextmusic" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/control_layout"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/app_btn_backward" />
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/backward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_btn_backward" />
+
+        <Button
+            android:id="@+id/start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_btn_start" />
+
+        <Button
+            android:id="@+id/pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_btn_pause" />
+
+        <Button
+            android:id="@+id/forward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_btn_forward" />
+
+    </LinearLayout>
+
+
 </LinearLayout>
