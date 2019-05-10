@@ -14,10 +14,15 @@
             android:layout_weight="1"
             android:hint="@string/app_et_musicurl"/>
         <Button
-            android:id="@+id/connect_network"
+            android:id="@+id/online_music"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/app_btn_connectnetwork" />
+            android:text="@string/app_btn_onlinemusic" />
+        <Button
+            android:id="@+id/download_music"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_btn_downloadmusic" />
     </LinearLayout>
 
     <LinearLayout

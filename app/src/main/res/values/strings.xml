@@ -5,8 +5,13 @@
     <string name="app_btn_pause">暂停</string>
     <string name="app_btn_backward">后退</string>
     <string name="app_btn_start">播放</string>
-    <string name="app_btn_connectnetwork">联网</string>
+    <string name="app_btn_onlinemusic">在线试听</string>
     <string name="app_btn_nextmusic">下一首</string>
     <string name="app_btn_forwardmusic">上一首</string>
     <string name="app_et_musicurl">输入歌曲网址</string>
+    <string name="app_btn_downloadmusic">下载歌曲</string>
+    <string name="app_btn_startdownload">下载</string>
+    <string name="app_btn_pausedownload">暂停</string>
+    <string name="app_btn_canceldownload">取消</string>
+    <string name="app_tv_downloadprogress">0%</string>
 </resources>

@@ -15,7 +15,9 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,6 +30,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.zys.weather.musicplayer.service.DownloadService;
@@ -62,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button select_file;
 
-    private Button connect_network;
+    private Button online_music;
 
     private Button next_music;
 
@@ -70,9 +73,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private EditText music_url;
 
+    private Button download_music;
+
+    private ProgressBar download_progress;
+
     private DownloadService.DownloadMusicBinder downloadMusicBinder;
 
     private BroadcastReceiver playerReceiver;
+
 
     private ServiceConnection serviceConnection = new ServiceConnection(){
         @Override
@@ -96,20 +104,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         start = (Button) findViewById(R.id.start);
         forward = (Button) findViewById(R.id.forward);
         backward = (Button) findViewById(R.id.backward);
-        connect_network = (Button)findViewById(R.id.connect_network);
+        online_music = (Button)findViewById(R.id.online_music);
         forward_music = (Button)findViewById(R.id.forward_music);
         next_music = (Button)findViewById(R.id.next_music);
         music_url = (EditText) findViewById(R.id.music_url);
-
+        download_music = (Button) findViewById(R.id.download_music);
+        download_progress = (ProgressBar) findViewById(R.id.download_progressBar);
 
         select_file.setOnClickListener(this);
         pause.setOnClickListener(this);
         start.setOnClickListener(this);
         forward.setOnClickListener(this);
         backward.setOnClickListener(this);
-        connect_network.setOnClickListener(this);
+        online_music.setOnClickListener(this);
         forward_music.setOnClickListener(this);
         next_music.setOnClickListener(this);
+        download_music.setOnClickListener(this);
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
         }
@@ -131,7 +141,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         break;
                     case "forward":
                         forwardMusic();
-                    break;
+                        break;
+                    case "start_download":
+                        downloadMusic();
+                        break;
+                    case "pause_download":
+                        downloadMusicBinder.pauseDownload();
+                        break;
+                    case "cancel_download":
+                        downloadMusicBinder.cancelDownload();
+                        break;
                     default:
                         break;
                 }
@@ -142,6 +161,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         intentFilter.addAction("pause");
         intentFilter.addAction("next");
         intentFilter.addAction("forward");
+        intentFilter.addAction("start_download");
+        intentFilter.addAction("pause_download");
+        intentFilter.addAction("cancel_download");
         registerReceiver(playerReceiver, intentFilter);
     }
 
@@ -169,7 +191,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
-//                    mediaPlayer.start();
                     totalTime = mediaPlayer.getDuration();
                 Intent intent = new Intent(MainActivity.this, DownloadService.class);
                 Log.d(TAG, intent.toString());
@@ -203,8 +224,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.backward:
                 backward();
-            case R.id.connect_network:
+            case R.id.online_music:
                 onlineMusic();
+                break;
+            case R.id.download_music:
+                downloadMusic();
                 break;
             case R.id.forward_music:
                 forwardMusic();
@@ -214,6 +238,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 break;
         }
+    }
+
+    private void downloadMusic() {
+        String url = music_url.getText().toString();
+        downloadMusicBinder.downloadMusic(url);
     }
 
     private void forwardMusic() {
@@ -249,11 +278,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void onlineMusic() {
-//        Log.d(TAG, "downloadMusic: ");
         Log.d(TAG, serviceConnection.toString());
-//        Intent intent = new Intent(this, DownloadService.class);
-//        Log.d(TAG, intent.toString());
-//        bindService(intent,serviceConnection,BIND_AUTO_CREATE);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -370,4 +395,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mediaPlayer.release();
         }
     }
+
 }

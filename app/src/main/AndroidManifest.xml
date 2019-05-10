@@ -24,20 +24,6 @@
             android:exported="true">
 
         </service>
-        <!--<activity android:name=".FirstActivity">-->
-            <!---->
-        <!--</activity>-->
-        <receiver android:name=".MyAppWidgetProvider">
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/appwidget_provider_info">
-            </meta-data>
-
-            <intent-filter>
-                <action android:name="study.chenj.chapter5.CLICK"/>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-            </intent-filter>
-        </receiver>
     </application>
 
 </manifest>
