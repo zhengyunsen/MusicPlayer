@@ -31,6 +31,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zys.weather.musicplayer.service.DownloadService;
@@ -40,6 +41,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -77,9 +80,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private ProgressBar download_progress;
 
+    private TextView current_time;
+
+    private TextView total_time;
+
+    private ProgressBar music_progress;
+
     private DownloadService.DownloadMusicBinder downloadMusicBinder;
 
     private BroadcastReceiver playerReceiver;
+
+    private Handler handler;
 
 
     private ServiceConnection serviceConnection = new ServiceConnection(){
@@ -110,6 +121,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         music_url = (EditText) findViewById(R.id.music_url);
         download_music = (Button) findViewById(R.id.download_music);
         download_progress = (ProgressBar) findViewById(R.id.download_progressBar);
+        music_progress = (ProgressBar)findViewById(R.id.music_progress);
+        current_time = (TextView)findViewById(R.id.current_time);
+        total_time = (TextView)findViewById(R.id.total_time);
 
         select_file.setOnClickListener(this);
         pause.setOnClickListener(this);
@@ -191,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
-                    totalTime = mediaPlayer.getDuration();
+                totalTime = mediaPlayer.getDuration();
                 Intent intent = new Intent(MainActivity.this, DownloadService.class);
                 Log.d(TAG, intent.toString());
                 bindService(intent,serviceConnection,BIND_AUTO_CREATE);
@@ -336,6 +350,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void startMusic() {
         if (!mediaPlayer.isPlaying()) {
             mediaPlayer.start();
+            Log.d(TAG, new Integer(totalTime).toString());
+            int minute = totalTime / 1000 % 3600 / 60;
+            int sec = totalTime / 1000 % 3600 % 60;
+            Log.d(TAG, "minute" + new Integer(minute).toString());
+            Log.d(TAG, "sec" + new Integer(sec).toString());
+            total_time.setText(new Integer(minute).toString() + ":" + new Integer(sec).toString());
+            music_progress.setMax(totalTime);
+
+            handler = new Handler(){
+                @Override
+                public void handleMessage(Message msg) {
+                    super.handleMessage(msg);
+                    if (msg.what == 0x123) {
+                        int currentPosition =mediaPlayer.getCurrentPosition();
+                        int minute = currentPosition / 1000 % 3600 / 60;
+                        int sec = currentPosition / 1000 % 3600 % 60;
+                        if (sec < 10) {
+                            current_time.setText(new Integer(minute).toString() + ":0" + new Integer(sec).toString());
+                        } else {
+                            current_time.setText(new Integer(minute).toString() + ":" + new Integer(sec).toString());
+                        }
+
+                        music_progress.setProgress(currentPosition);
+                    }
+                }
+            };
+
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                // TODO Auto-generated method stub
+                    MainActivity.this.handler.sendEmptyMessage(0x123);
+                }
+            }, 0, 1000);
+
+
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
